@@ -1,0 +1,127 @@
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+    background-color: #f4f4f4;
+}
+
+h1, h2, h3 {
+    color: #333;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.keys-section, .operations-section, .results-section {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    flex: 1;
+    min-width: 300px; /* Prevent sections from becoming too narrow */
+}
+
+.keys-section ul {
+    list-style: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    margin-top: 5px;
+}
+
+.keys-section li {
+    padding: 3px 5px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9em;
+    word-break: break-all;
+}
+.keys-section li:last-child {
+    border-bottom: none;
+}
+
+
+.operation-form {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #ccc;
+}
+.operation-form:last-child {
+    border-bottom: none;
+}
+
+
+label {
+    display: block;
+    margin-bottom: 3px;
+    font-weight: bold;
+    font-size: 0.95em;
+}
+
+input[type="text"],
+textarea,
+select {
+    width: 95%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 1em;
+}
+
+textarea {
+    min-height: 60px;
+    resize: vertical;
+}
+
+button {
+    background-color: #5cb85c;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-right: 5px;
+}
+
+button:hover {
+    background-color: #4cae4c;
+}
+
+#result-output pre {
+    background-color: #eee;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    white-space: pre-wrap; /* Wrap long lines */
+    word-wrap: break-word; /* Break long words/strings */
+    max-height: 400px;
+    overflow-y: auto;
+    font-family: monospace;
+}
+
+#qr-code-display svg {
+     max-width: 250px; /* Control QR code size */
+     height: auto;
+     display: block;
+     margin-top: 10px;
+     border: 1px solid #ccc;
+}
+
+
+.error {
+    color: #d9534f;
+    font-weight: bold;
+}
+
+#qr-reader {
+     border: 1px solid #ccc;
+}
+#qr-reader-results {
+     font-style: italic;
+     color: #555;
+}
