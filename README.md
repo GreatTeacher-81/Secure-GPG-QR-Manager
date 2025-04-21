@@ -62,12 +62,16 @@ A primary goal is to facilitate secure data exchange, particularly with air-gapp
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository-url> # Replace with your repo URL
-    cd secure-gpg-qr # Or your chosen directory name
+    git clone https://github.com/GreatTeacher-81/Secure-GPG-QR-Manager secure-gpg
+    cd secure-gpg
     ```
 2.  **Build the project:**
     *   **Debug build:** `cargo build`
-    *   **Release build (recommended for use):** `cargo build --release`
+    *   **Release build (recommended for use):** `cargo build --release`**
+## Note  
+1. This All Coded by Gemini
+2. The Idea From Me Not From Gemini
+3. This Tool Doesnt Recoded GPG in rust but Used GPG
 
 The executable will be located at `target/debug/secure_gpg_qr` or `target/release/secure_gpg_qr`.
 
