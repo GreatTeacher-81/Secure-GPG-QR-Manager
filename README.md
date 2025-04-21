@@ -1,10 +1,10 @@
 # Secure GPG Manager (Rust Edition)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) <!-- Or Apache-2.0 -->
+[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)
 
-**A significantly more secure, Rust-based reimplementation and enhancement of a GPG interaction tool, featuring a local web UI designed for secure data transfer (e.g., to/from offline devices) using QR codes.**
+**A secure GPG management tool in Rust with a local web UI and QR code support for offline data transfer. Uses GPGME for reliable GnuPG interaction.**
 
-This project aims to provide robust GPG functionalities (encryption, decryption, signing, verification, key management) through a local web interface. It leverages the security benefits of Rust (memory safety) and the official GPGME library for reliable interaction with your existing GnuPG installation.
+This project provides robust GPG functionalities (encryption, decryption, signing, verification, key management) through a local web interface. It leverages the security benefits of Rust (memory safety) and the official GPGME library for reliable interaction with your existing GnuPG installation.
 
 A primary goal is to facilitate secure data exchange, particularly with air-gapped or offline machines, by generating QR codes for GPG data (keys, messages) and providing a mechanism to process data scanned from QR codes via the client's browser camera.
 
@@ -62,14 +62,14 @@ A primary goal is to facilitate secure data exchange, particularly with air-gapp
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository-url>
-    cd secure-gpg-manager-rust
+    git clone <repository-url> # Replace with your repo URL
+    cd secure-gpg-qr # Or your chosen directory name
     ```
 2.  **Build the project:**
     *   **Debug build:** `cargo build`
     *   **Release build (recommended for use):** `cargo build --release`
 
-The executable will be located at `target/debug/secure_gpg_manager` or `target/release/secure_gpg_manager`.
+The executable will be located at `target/debug/secure_gpg_qr` or `target/release/secure_gpg_qr`.
 
 ## Running (Web Interface Mode)
 
@@ -77,13 +77,13 @@ The primary way to use this tool is via the web interface:
 
 ```bash
 # Run with default settings (localhost, random high port, default GPG home)
-./target/release/secure_gpg_manager web
+./target/release/secure_gpg_qr web
 
 # Run on a specific port
-./target/release/secure_gpg_manager web --port 8080
+./target/release/secure_gpg_qr web --port 8080
 
 # Run binding to a different IP (Use with extreme caution!)
-# ./target/release/secure_gpg_manager web --bind 0.0.0.0 --port 8080
+# ./target/release/secure_gpg_qr web --bind 0.0.0.0 --port 8080
 
 # Specify a custom GPG home directory
-./target/release/secure_gpg_manager web --gpg-dir /path/to/my/gpg/home
+./target/release/secure_gpg_qr web --gpg-dir /path/to/my/gpg/home
