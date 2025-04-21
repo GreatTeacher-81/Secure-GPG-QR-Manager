@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure GPG Manager - Web Interface</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <!-- Include QR Scanner Library -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <!-- Placeholder: <script src="/static/qrcode_scanner_lib.js"></script> -->
+</head>
+<body>
+    <h1>Secure GPG Manager - Web Interface</h1>
+    <p><strong>Status:</strong> <span id="status">Loading...</span></p>
+    <p style="color:red;"><strong>Note:</strong> This interface is designed for secure data transfer with offline devices using QR codes. Use with caution.</p>
+
+    <div class="container">
+        <div class="keys-section">
+            <h2>Public Keys</h2>
+            <ul id="public-keys-list">
+                {% for key in current_keys %}
+                <li>{{ key }}</li>
+                {% endfor %}
+            </ul>
+             <h2>Secret Keys</h2>
+             <ul id="secret-keys-list">
+                 {% for key in secret_keys %}
+                 <li>{{ key }}</li>
+                 {% endfor %}
+             </ul>
+        </div>
+
+        <div class="operations-section">
+            <h2>Operations</h2>
+
+            <!-- Export Key -->
+            <form id="export-form" class="operation-form">
+                <h3>Export Key</h3>
+                <label for="export-key-id">Key ID or User ID:</label>
+                <input type="text" id="export-key-id" name="key_id" required><br>
+                 <label for="export-secret">Export Secret Key?</label>
+                 <input type="checkbox" id="export-secret" name="secret" value="true"><br>
+                <button type="submit">Export Key</button>
+            </form>
+
+            <!-- Import Key -->
+            <form id="import-form" class="operation-form">
+                <h3>Import Key</h3>
+                <label for="import-key-data">Paste Key Data:</label><br>
+                <textarea id="import-key-data" name="key_data" rows="8" required></textarea><br>
+                <button type="submit">Import Key</button>
+            </form>
+
+            <!-- Encrypt -->
+            <form id="encrypt-form" class="operation-form">
+                <h3>Encrypt Data</h3>
+                <label for="encrypt-recipients">Recipient Key IDs (comma-separated):</label>
+                <input type="text" id="encrypt-recipients" name="recipients" required><br>
+                <label for="encrypt-plaintext">Plaintext:</label><br>
+                <textarea id="encrypt-plaintext" name="plaintext" rows="5" required></textarea><br>
+                <button type="submit">Encrypt</button>
+            </form>
+
+             <!-- Decrypt -->
+            <form id="decrypt-form" class="operation-form">
+                <h3>Decrypt Data</h3>
+                <p style="font-style: italic;">Note: Assumes GPG agent handles passphrase or key is unprotected.</p>
+                <label for="decrypt-ciphertext">Ciphertext:</label><br>
+                <textarea id="decrypt-ciphertext" name="ciphertext" rows="8" required></textarea><br>
+                <button type="submit">Decrypt</button>
+            </form>
+
+             <!-- Sign -->
+             <form id="sign-form" class="operation-form">
+                 <h3>Sign Data</h3>
+                 <p style="font-style: italic;">Note: Assumes GPG agent handles passphrase or key is unprotected.</p>
+                 <label for="sign-key-id">Signer Key ID or User ID:</label>
+                 <input type="text" id="sign-key-id" name="signer_key_id" required><br>
+                 <label for="sign-mode">Signature Mode:</label>
+                 <select id="sign-mode" name="sign_mode">
+                      <option value="clearsign" selected>Clearsign</option>
+                      <option value="detach">Detach</option>
+                      <!-- <option value="normal">Normal (Binary)</option> -->
+                 </select><br>
+                 <label for="sign-plaintext">Plaintext:</label><br>
+                 <textarea id="sign-plaintext" name="plaintext" rows="5" required></textarea><br>
+                 <button type="submit">Sign</button>
+             </form>
+
+              <!-- Verify -->
+             <form id="verify-form" class="operation-form">
+                 <h3>Verify Data</h3>
+                 <label for="verify-signed-data">Signed Data (Clearsigned or Detached Signature):</label><br>
+                 <textarea id="verify-signed-data" name="signed_data" rows="8" required></textarea><br>
+                 <!-- Add input for original data file if detached -->
+                 <button type="submit">Verify</button>
+             </form>
+
+
+        </div>
+
+        <div class="results-section">
+            <h2>Results / QR Transfer</h2>
+             <div id="result-output">
+                 {% if last_result %}
+                 <h3>Last Operation Result:</h3>
+                 <pre>{{ last_result }}</pre>
+                 {% endif %}
+                 {% if error_message %}
+                 <p class="error">Error: {{ error_message }}</p>
+                 {% endif %}
+             </div>
+            <div id="qr-code-output">
+                {% if last_qr_code %}
+                <h3>QR Code for Transfer:</h3>
+                <div id="qr-code-display">
+                     {{ last_qr_code|safe }}
+                </div>
+                 <p>Scan this QR code with the other device.</p>
+                {% endif %}
+            </div>
+
+             <hr>
+             <h2>QR Code Import (Client Side Scan)</h2>
+             <div id="qr-reader" style="width: 300px; margin-bottom: 10px;"></div>
+             <div id="qr-reader-results" style="margin-bottom: 10px;"></div>
+             <button id="start-scan-btn">Start Camera Scan</button>
+             <button id="stop-scan-btn" style="display:none;">Stop Scan</button>
+             <div id="scanned-data-action" style="margin-top: 15px;">
+                 <h3>Scanned Data:</h3>
+                 <pre id="scanned-data-display" style="max-height: 150px; overflow: auto; border: 1px solid #ccc; padding: 5px; background-color: #f9f9f9;">(Scan result will appear here)</pre>
+                 <p><strong>Detected Type:</strong> <span id="scanned-data-type">N/A</span></p>
+                 <p><em>After scanning, you can choose an action like 'Import Key' or 'Decrypt' based on the data type.</em></p>
+                 <!-- Add buttons for actions based on scanned data type -->
+                 <button id="import-scanned-key-btn" style="display:none;">Import Scanned Key</button>
+                 <button id="decrypt-scanned-msg-btn" style="display:none;">Decrypt Scanned Message</button>
+                 <button id="verify-scanned-msg-btn" style="display:none;">Verify Scanned Message</button>
+             </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
